@@ -157,7 +157,7 @@ class AssignmentMaterialSerializer(serializers.ModelSerializer):
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ['id', 'title', 'course', 'video', 'created_at', 'updated_at', 'teacher', 'description']
+        fields = ['id', 'title', 'course', 'created_at', 'updated_at', 'teacher', 'description']
 
     id = serializers.IntegerField(read_only=True)
     course = SimpleCourseSerializer(read_only=True)

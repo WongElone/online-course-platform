@@ -7,14 +7,17 @@ name = "pypi"
 django = "==4.2.1"
 djangorestframework = "*"
 djoser = "*"
-django-debug-toolbar = "*"
 drf-nested-routers = "*"
 djangorestframework-simplejwt = "*"
 pillow = "*"
 python-dotenv = "*"
 mysqlclient = "*"
+django-storages = "*"
+boto3 = "*"
+botocore = "*"
 
 [dev-packages]
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.10"

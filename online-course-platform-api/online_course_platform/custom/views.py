@@ -1,3 +1,4 @@
+from django.conf import settings
 from .serializers import RetrieveCourseCategorySerializer, CourseSerializer, RetrieveCourseSerializer, CourseCategorySerializer, UpdateTeacherSerializer, RetrieveTeacherSerializer, UpdateStudentSerializer, RetrieveStudentSerializer, AssignmentSerializer, AssignmentMaterialSerializer, LessonSerializer, TeacherJoinCourseRequestSerializer, RetrieveTeacherJoinCourseRequestSerializer
 from django.shortcuts import get_object_or_404
 from .models import CourseCategory, Course, Teacher, TeacherJoinCourseRequest, Student, Assignment, AssignmentMaterial, Lesson
@@ -11,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, S
 from django.db import transaction
 from .permissions import IsAdminOrCourseTeacher, IsAdminOrCourseTeacherOrCourseStudent, IsAdminOrTeacher, IsNotAdminUser
 from rest_framework.exceptions import ParseError, NotFound, MethodNotAllowed, PermissionDenied
+import boto3
+from botocore import exceptions
 
 class CourseCategoryViewSet(ModelViewSet):
     queryset = CourseCategory.objects.prefetch_related('courses').all()
@@ -231,3 +234,62 @@ class LessonViewSet(ModelViewSet):
         context = super().get_serializer_context()
         context['course_pk'] = self.kwargs['course_pk']
         return context
+    
+    @action(detail=True, methods=['GET'], permission_classes=[IsAuthenticated, IsAdminOrCourseTeacherOrCourseStudent])
+    def video(self, request, *args, **kwargs):
+        lesson_id = self.kwargs['pk']
+        lesson = Lesson.objects.filter(id=lesson_id).first()
+        if not lesson:
+            return Response({
+                'message': 'lesson with given id not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+        elif not lesson.video:
+            return Response({
+                'message': 'lesson video not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            url = get_media_file_url(lesson.video)
+        except Exception as e:
+            return Response({
+                'message': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response({
+            'url': url
+        })
+    
+def get_s3_media_file_url(media_file):
+    print("media file url", media_file.url)
+    index = media_file.url.find('.com/')
+    if index == -1:
+        raise ValueError(".com/ not found in media_file_url")
+
+    s3_media_file_name = media_file.url[index+5:]
+
+    # Generate s3 client
+    s3_client = boto3.client(
+        's3', 
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID, 
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
+
+    # Generate a signed URL for the media file
+    try:
+        presigned_url = s3_client.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
+                'Key': s3_media_file_name,
+            },
+            ExpiresIn=60) # URL expires in 1 hour
+         
+    except exceptions.ClientError:
+        raise Exception('S3 Client Error')
+    
+    return presigned_url  
+    
+def get_local_media_file_url(media_file):
+    return media_file.url
+
+get_media_file_url = get_s3_media_file_url if settings.USE_S3 else get_local_media_file_url;

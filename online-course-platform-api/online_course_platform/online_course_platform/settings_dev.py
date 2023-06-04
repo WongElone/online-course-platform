@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'djoser',
+    'storages',
     'debug_toolbar',
     'core',
     'custom',
@@ -49,7 +50,3 @@ DATABASES = {
         },
     }
 }
-
-# media handling for development
-MEDIA_URL = 'media/' # media api endpoint
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # location of media folder
