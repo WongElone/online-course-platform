@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.2.1"
+djangorestframework = "*"
+djoser = "*"
+django-debug-toolbar = "*"
+drf-nested-routers = "*"
+djangorestframework-simplejwt = "*"
+pillow = "*"
+python-dotenv = "*"
+mysqlclient = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
