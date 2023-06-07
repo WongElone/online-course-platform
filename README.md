@@ -16,7 +16,7 @@
 
 - Database: AWS RDS MySQL
 - API: Django
-- Front-end: React
+- Front-end: React, TypeScript
 
 ## License
 
