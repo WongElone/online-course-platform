@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==4.2.1"
+django = "==3.2.19"
 djangorestframework = "*"
 djoser = "*"
 drf-nested-routers = "*"
@@ -15,9 +15,8 @@ mysqlclient = "*"
 django-storages = "*"
 boto3 = "*"
 botocore = "*"
-
-[dev-packages]
+gunicorn = "*"
 django-debug-toolbar = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.8"
