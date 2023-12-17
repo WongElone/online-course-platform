@@ -1,6 +1,6 @@
 # Online course platform (Django, React, Typescript)  
-## ✨API is NOT open for test now✨
-~~Base URL of API for testing: http://demo-django-online-course-api.elonewong.com/api/v1/~~  
+## ✨API is open for test now✨
+Base URL of API for testing: https://demo-online-course-api-dj.elonewong.com/api/v1/  
 📄 Read the API endpoints documentation here: https://docs.google.com/spreadsheets/d/1PyRbKhH_I0F0yJfaxafk92eKTFNN2qsMYMS7JRz0K6Y/edit?usp=sharing  
 
 ## ER Diagram
