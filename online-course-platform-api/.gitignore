@@ -1,5 +1,3 @@
-online_course_platform/online_course_platform/settings_prod.py
-
 ## Below is standard .gitignore for Django project
 # Django #
 *.log

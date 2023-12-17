@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -154,8 +154,8 @@ if USE_S3:
     DEFAULT_FILE_STORAGE = 'custom.storage_backends.PublicMediaStorage'
 
     # s3 private media settings
-    PRIVATE_MEDIA_LOCATION = 'private'
-    PRIVATE_FILE_STORAGE = 'custom.storage_backends.PrivateMediaStorage'
+    # PRIVATE_MEDIA_LOCATION = 'private'
+    # PRIVATE_FILE_STORAGE = 'custom.storage_backends.PrivateMediaStorage'
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
